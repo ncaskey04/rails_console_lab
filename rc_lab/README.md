@@ -5,7 +5,13 @@ For this lab, we'd like you to strengthen your Rails console skills. This lab is
 To Start
 
 1. Create a model called Student, that has a first_name, last_name and age
+
+  # rake db:create
+  # rails generate model Student first_name:string last_name:string age:integer
+
 2. Don't forget to run your migrations
+
+  # rake db:migrate
 
 Tasks to create
 
@@ -106,4 +112,16 @@ Tasks to create
 Bonus
 
 1. Use the validates_format_of and regex to only validate names that consist of letters (no numbers or symbols) and start with a capital letter
+
+  # validates_format_of :first_name, :last_name, :with => (/[A-Za-z]\w*/)
+
 2. Write a custom validation to ensure that no one named Delmer Reed, Tim Licata, Anil Bridgpal or Elie Schoppik is included in the students table
+
+  # FORBIDDEN_NAMES = ["Delmer Reed", "Tim Licata", "Anil Bridgpal", "Elie Schoppik"]
+    validate :name_is_allowed
+
+    def name_is_allowed
+      if FORBIDDEN_NAMES.include?(studentName)
+        errors.add(:student, "This is a restricted name")
+      end
+    end

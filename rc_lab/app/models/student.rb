@@ -10,5 +10,17 @@ class Student < ActiveRecord::Base
   validates :first_name, :last_name, 
               :length => {:minimum => 5},
               :presence => true,
-              :uniqueness => true
+              :uniqueness => true,
+              :format => { :with => (/[A-Za-z]\w*/) }
+
+  FORBIDDEN_NAMES = ["Delmer Reed", "Tim Licata", "Anil Bridgpal", "Elie Schoppik"]
+  validate :name_is_allowed
+
+  def name_is_allowed
+    if FORBIDDEN_NAMES.include?(studentName)
+      errors.add(:student, "This is a restricted name")
+    end
+  end
+  
 end
+
